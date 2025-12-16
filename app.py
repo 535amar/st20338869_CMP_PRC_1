@@ -11,9 +11,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.ensemble import RandomForestRegressor
 
 
-# -------------------------------
+
 # App settings
-# -------------------------------
+
 st.set_page_config(page_title="AQI Dashboard", layout="wide")
 
 st.markdown("""
@@ -43,9 +43,9 @@ st.write(
 )
 
 
-# -------------------------------
+
 # Load + clean dataset
-# -------------------------------
+
 @st.cache_data
 def load_data(csv_path="all_cities_merged.csv"):
     df = pd.read_csv(csv_path)
@@ -82,7 +82,6 @@ def load_data(csv_path="all_cities_merged.csv"):
     return df
 
 
-# -------------------------------
 # Model training (cached)
 # -------------------------------
 @st.cache_resource(show_spinner=False)
@@ -148,9 +147,9 @@ def aqi_bucket(value):
         return "Severe"
 
 
-# -------------------------------
+
 # Load data + model
-# -------------------------------
+
 df = load_data()
 
 with st.spinner("Training AQI prediction model... Please wait ⏳"):
@@ -160,17 +159,17 @@ cities = sorted(df["City"].dropna().unique())
 years = sorted(df["Year"].dropna().astype(int).unique())
 
 
-# -------------------------------
+
 # Sidebar navigation
-# -------------------------------
+
 st.sidebar.title("Control Panel")
 page = st.sidebar.radio("Go to", ["Dataset Overview", "City Explorer", "AQI Predictor"])
 st.sidebar.divider()
 
 
-# ============================================================
+
 # PAGE 1 — Dataset Overview
-# ============================================================
+
 if page == "Dataset Overview":
     st.subheader("Dataset Overview")
 
@@ -239,9 +238,9 @@ if page == "Dataset Overview":
         st.warning("AQI_Bucket column not found in this dataset.")
 
 
-# ============================================================
+
 # PAGE 2 — City Explorer
-# ============================================================
+
 elif page == "City Explorer":
     st.subheader("City Explorer (AQI Trends)")
 
@@ -266,9 +265,9 @@ elif page == "City Explorer":
     st.plotly_chart(fig, use_container_width=True)
 
 
-# ============================================================
+
 # PAGE 3 — AQI Predictor
-# ============================================================
+
 elif page == "AQI Predictor":
     st.subheader("AQI Predictor")
 
@@ -321,3 +320,4 @@ elif page == "AQI Predictor":
         c1, c2 = st.columns(2)
         c1.metric("Predicted AQI", f"{pred:.1f}")
         c2.metric("Predicted Category", aqi_bucket(pred))
+
